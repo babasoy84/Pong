@@ -1,4 +1,5 @@
 const winningScore = 7;
+const isMobile = window.matchMedia('(max-width: 500px)');
 
 const game = {
     width: 500,
@@ -6,7 +7,10 @@ const game = {
     color: 'black',
     show() {
         this.elem = document.getElementById("game");
-        this.elem.style.width = this.width + "px";
+        if (isMobile.matches){
+            this.width = window.screen.width;
+        }
+        this.elem.style.width = this.width + 'px';
         this.elem.style.height = this.height + "px";
         this.elem.style.background = this.color;
     },
@@ -29,6 +33,11 @@ const menu = {
     color: 'deepskyblue',
     show(winner) {
         this.elem = document.getElementById("menu");
+        let button = document.createElement("button");
+        if (isMobile.matches){
+            this.width = window.screen.width;
+            button.style.left = this.width / 2 - 85 + 'px';
+        }
         this.elem.style.width = this.width + "px";
         this.elem.style.height = this.height + "px";
         this.elem.style.background = this.color;
@@ -36,7 +45,6 @@ const menu = {
         p.id = "title";
         p.textContent = `${winner} won!!!`;
         this.elem.append(p);
-        let button = document.createElement("button");
         button.id = "restartBtn";
         button.textContent = "restart";
         button.onclick = () => { location.reload(); }
