@@ -274,7 +274,10 @@ const ball = {
     }
 }
 
-let start = setInterval(ball.move, 5);
+let s = 6;
+if (isMobile.matches)
+    s = 2;
+let start = setInterval(ball.move, s);
 game.create();
 line.create();
 playerScore.create();
