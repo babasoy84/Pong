@@ -1,0 +1,64 @@
+body {
+    background-color: rgb(255, 242, 0);
+}
+
+#game {
+    position: relative;
+    margin: 0 auto;
+    box-shadow: 0 0 10px #333;
+}
+
+#menu {
+    position: relative;
+    margin: 50px auto;
+    box-shadow: 0 0 10px #333;
+}
+
+
+#line {
+    border: 3.3px dotted gray;
+    border-style: none none dotted;
+    position: absolute;
+}
+
+.score {
+    position: absolute;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.paddle {
+    position: absolute;
+}
+
+#ball {
+    position: absolute;
+}
+
+#title {
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 40px;
+    text-align: center;
+    padding-top: 70px;
+    color: white;
+}
+
+#restartBtn {
+    background-color: white;
+    color: deepskyblue;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    left: 165px;
+    top: 270px;
+    border-radius: 20px;
+    padding: 13px;
+    border: 0;
+    width: 170px;
+    box-shadow: 0 0px 8px #333;
+}
