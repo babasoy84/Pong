@@ -1,5 +1,8 @@
 const winningScore = 7;
 const isMobile = window.matchMedia('(max-width: 500px)');
+let k = 1;
+if (isMobile.matches)
+    k = 5;
 
 const game = {
     width: 500,
@@ -7,7 +10,7 @@ const game = {
     color: 'black',
     show() {
         this.elem = document.getElementById("game");
-        if (isMobile.matches){
+        if (isMobile.matches) {
             this.width = window.screen.width;
         }
         this.elem.style.width = this.width + 'px';
@@ -34,7 +37,7 @@ const menu = {
     show(winner) {
         this.elem = document.getElementById("menu");
         let button = document.createElement("button");
-        if (isMobile.matches){
+        if (isMobile.matches) {
             this.width = window.screen.width;
             button.style.left = this.width / 2 - 85 + 'px';
         }
@@ -118,14 +121,18 @@ const playerPaddle = {
     width: 50,
     height: 10,
     speed: 25,
-    x: (game.width - 50) / 2,
+    x: 225,
     y: 10,
     color: 'white',
-    show() {
-        playerPaddle.elem = document.getElementById('playerPaddle');
-        playerPaddle.elem.style.height = this.height + 'px';
-        playerPaddle.elem.style.width = this.width + 'px';
-        playerPaddle.elem.style.background = this.color;
+    show(opcode = 0) {
+        if (opcode) {
+            if (isMobile.matches)
+                this.x = (game.width - this.width) / 2;
+            playerPaddle.elem = document.getElementById('playerPaddle');
+            playerPaddle.elem.style.height = this.height + 'px';
+            playerPaddle.elem.style.width = this.width + 'px';
+            playerPaddle.elem.style.background = this.color;
+        }
         playerPaddle.elem.style.bottom = this.y + 'px';
         playerPaddle.elem.style.left = this.x + 'px';
 
@@ -135,7 +142,7 @@ const playerPaddle = {
         div.className = "paddle";
         div.id = "playerPaddle";
         game.elem.append(div);
-        this.show();
+        this.show(1);
     },
     move(e) {
         if (e.type == 'keydown') {
@@ -155,11 +162,14 @@ const compPaddle = {
     width: 50,
     height: 10,
     speed: 1,
-    x: (game.width - 50) / 2,
+    x: 225,
     y: 10,
     color: 'white',
     show(opcode = 0) {
         if (opcode) {
+            if (isMobile.matches)
+                this.x = (game.width - this.width) / 2;
+            this.speed *= k;
             compPaddle.elem = document.getElementById('compPaddle');
             compPaddle.elem.style.height = this.height + 'px';
             compPaddle.elem.style.width = this.width + 'px';
@@ -192,13 +202,18 @@ const compPaddle = {
 const ball = {
     width: 10,
     height: 10,
-    speedX: 1,
+    speedX: 0,
     speedY: 1,
     x: 245,
     y: 345,
     color: 'white',
     show(opcode = 0) {
         if (opcode == 1) {
+            if (isMobile.matches) {
+                this.x = (game.width - ball.width) / 2;
+                this.y = (game.height - ball.height) / 2;
+            }
+            this.speedY *= k;
             ball.elem = document.getElementById('ball');
             ball.elem.style.width = this.width + 'px';
             ball.elem.style.height = this.height + 'px';
@@ -241,13 +256,13 @@ const ball = {
                 ball.x + ball.width / 2 <= compPaddle.x + compPaddle.width &&
                 ball.y <= compPaddle.height + compPaddle.y)) {
 
-            if (ball.y == compPaddle.height + compPaddle.y ||
-                ball.y + ball.height == game.height - playerPaddle.height - playerPaddle.y) {
+            if (ball.y <= compPaddle.height + compPaddle.y ||
+                ball.y + ball.height >= game.height - playerPaddle.height - playerPaddle.y) {
                 ball.speedY *= -1;
-                if (ball.y + ball.height == game.height - playerPaddle.height - playerPaddle.y)
-                    ball.speedX = (ball.x - playerPaddle.x - playerPaddle.width / 2) / 15;
+                if (ball.y + ball.height >= game.height - playerPaddle.height - playerPaddle.y)
+                    ball.speedX = (ball.x + ball.width / 2 - playerPaddle.x - playerPaddle.width / 2) / 15 * k;
                 else
-                    ball.speedX = (ball.x - compPaddle.x - compPaddle.width / 2) / 15;
+                    ball.speedX = (ball.x + ball.width / 2 - compPaddle.x - compPaddle.width / 2) / 15 * k;
 
                 if (ball.speedX < 0)
                     compPaddle.speed = -ball.speedX;
@@ -265,19 +280,16 @@ const ball = {
         compPaddle.move();
     },
     reset() {
-        this.x = 245;
-        this.y = 345;
+        this.x = (game.width - ball.width) / 2;
+        this.y = (game.height - ball.height) / 2;
         this.speedY = 1;
-        this.speedX = 1;
-        compPaddle.speed = 1;
+        this.speedX = 0;
+        compPaddle.speed = k;
         this.show(1);
     }
 }
 
-let s = 6;
-if (isMobile.matches)
-    s = 2;
-let start = setInterval(ball.move, s);
+let start = setInterval(ball.move, 6);
 game.create();
 line.create();
 playerScore.create();
