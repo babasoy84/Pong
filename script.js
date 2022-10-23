@@ -2,7 +2,7 @@ const winningScore = 7;
 const isMobile = window.matchMedia('(max-width: 500px)');
 let k = 1;
 if (isMobile.matches)
-    k = 5;
+    k = 3;
 
 const game = {
     width: 500,
